@@ -24,7 +24,7 @@ public class SubscriptionTypeModel implements Serializable {
 
     private String name;
 
-    @Column(name = "access_month")
+    @Column(name = "access_months")
     private Long accessMonth;
 
     private BigDecimal price;
