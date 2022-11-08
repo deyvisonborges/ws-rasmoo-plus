@@ -1,4 +1,4 @@
-package com.cliente.rasmoo.plus.repository;
+package com.cliente.rasmoo.plus.repositories;
 
 import com.cliente.rasmoo.plus.models.UserPaymentInfoModel;
 import org.springframework.data.jpa.repository.JpaRepository;

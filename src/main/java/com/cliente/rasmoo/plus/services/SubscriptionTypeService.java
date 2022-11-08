@@ -1,16 +1,17 @@
-package com.cliente.rasmoo.plus.service;
+package com.cliente.rasmoo.plus.services;
 
+import com.cliente.rasmoo.plus.dtos.SubscriptionTypeDto;
 import com.cliente.rasmoo.plus.exceptions.NotFoundException;
 import com.cliente.rasmoo.plus.models.SubscriptionTypeModel;
-import com.cliente.rasmoo.plus.repository.SubscriptionTypeRepository;
-import com.cliente.rasmoo.plus.rules.SubsscriptionTypeRules;
+import com.cliente.rasmoo.plus.repositories.SubscriptionTypeRepository;
+import com.cliente.rasmoo.plus.services.rules.SubscriptionTypeRules;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SubscriptionTypeService implements SubsscriptionTypeRules {
+public class SubscriptionTypeService implements SubscriptionTypeRules {
 
     private final SubscriptionTypeRepository subscriptionTypeRepository;
 
@@ -33,8 +34,16 @@ public class SubscriptionTypeService implements SubsscriptionTypeRules {
     }
 
     @Override
-    public SubscriptionTypeModel create(SubscriptionTypeModel subscriptionTypeModel) {
-        return null;
+    public SubscriptionTypeModel create(SubscriptionTypeDto dto) {
+        return subscriptionTypeRepository.save(
+            SubscriptionTypeModel
+                .builder()
+                .id(dto.getId())
+                .name(dto.getName())
+                .accessMonth(dto.getAccessMonth())
+                .price(dto.getPrice())
+                .productKey(dto.getProductKey())
+                .build());
     }
 
     @Override

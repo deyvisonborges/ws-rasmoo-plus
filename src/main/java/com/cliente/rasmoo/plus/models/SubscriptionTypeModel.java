@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 public class SubscriptionTypeModel implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subscriptions_type_id")
     private Long id;
 
@@ -29,6 +29,6 @@ public class SubscriptionTypeModel implements Serializable {
 
     private BigDecimal price;
 
-    @Column(name = "product_key")
+    @Column(name = "product_key", unique = true)
     private String productKey;
 }
