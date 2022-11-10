@@ -8,7 +8,7 @@ import java.util.List;
 public interface SubscriptionTypeRules {
     List<SubscriptionTypeModel> findAll();
     SubscriptionTypeModel findById(Long id);
-    SubscriptionTypeModel create(SubscriptionTypeDto subscriptionTypeDto);
-    SubscriptionTypeModel update(Long id, SubscriptionTypeModel subscriptionTypeModel);
+    SubscriptionTypeModel create(SubscriptionTypeDto dto);
+    SubscriptionTypeModel update(Long id, SubscriptionTypeDto dto);
     void delete(Long id);
 }

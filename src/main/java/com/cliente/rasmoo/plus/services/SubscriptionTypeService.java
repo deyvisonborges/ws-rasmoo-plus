@@ -28,11 +28,7 @@ public class SubscriptionTypeService implements SubscriptionTypeRules {
 
     @Override
     public SubscriptionTypeModel findById(Long id) {
-        Optional<SubscriptionTypeModel> optionalSubscriptionTypeModel = subscriptionTypeRepository.findById(id);
-        if(optionalSubscriptionTypeModel.isEmpty()) {
-            throw new NotFoundException("SubscriptionType não encontrado");
-        }
-        return optionalSubscriptionTypeModel.get();
+        return getSubscriptionTypeModel(id);
     }
 
     @Override
@@ -52,12 +48,30 @@ public class SubscriptionTypeService implements SubscriptionTypeRules {
     }
 
     @Override
-    public SubscriptionTypeModel update(Long id, SubscriptionTypeModel subscriptionTypeModel) {
-        return null;
+    public SubscriptionTypeModel update(Long id, SubscriptionTypeDto dto) {
+       getSubscriptionTypeModel(id);
+        return subscriptionTypeRepository.save(
+            SubscriptionTypeModel
+                .builder()
+                .id(id)
+                .name(dto.getName())
+                .accessMonth(dto.getAccessMonth())
+                .price(dto.getPrice())
+                .productKey(dto.getProductKey())
+                .build());
     }
 
     @Override
     public void delete(Long id) {
+        getSubscriptionTypeModel(id);
+        subscriptionTypeRepository.deleteById(id);
+    }
 
+    private SubscriptionTypeModel getSubscriptionTypeModel(Long id) {
+        Optional<SubscriptionTypeModel> optionalSubscriptionTypeModel = subscriptionTypeRepository.findById(id);
+        if(optionalSubscriptionTypeModel.isEmpty()) {
+            throw new NotFoundException("SubscriptionType não encontrado");
+        }
+        return optionalSubscriptionTypeModel.get();
     }
 }
