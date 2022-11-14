@@ -19,6 +19,8 @@ import java.util.Optional;
 public class SubscriptionTypeService implements SubscriptionTypeRules {
 
     private final SubscriptionTypeRepository subscriptionTypeRepository;
+    private static final String UPDATE = "update";
+    private static final String DELETE = "delete";
 
     public SubscriptionTypeService(SubscriptionTypeRepository subscriptionTypeRepository) {
         this.subscriptionTypeRepository = subscriptionTypeRepository;
@@ -31,11 +33,24 @@ public class SubscriptionTypeService implements SubscriptionTypeRules {
 
     @Override
     public SubscriptionTypeModel findById(Long id) {
-        return getSubscriptionTypeModel(id).add(WebMvcLinkBuilder.linkTo(
+        return getSubscriptionTypeModel(id)
+        .add(WebMvcLinkBuilder.linkTo(
             WebMvcLinkBuilder
                 .methodOn(SubscriptionTypeController.class)
                 .findById(id))
                 .withSelfRel()
+        )
+        .add(WebMvcLinkBuilder.linkTo(
+            WebMvcLinkBuilder
+                .methodOn(SubscriptionTypeController.class)
+                .update(id, new SubscriptionTypeDto()))
+                .withRel(UPDATE)
+        )
+        .add(WebMvcLinkBuilder.linkTo(
+            WebMvcLinkBuilder
+                .methodOn(SubscriptionTypeController.class)
+                .delete(id))
+                .withRel(DELETE)
         );
     }
 
