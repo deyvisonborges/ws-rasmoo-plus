@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Table(name = "users")
 public class UserModel implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "users_id")
     private Long id;
 
