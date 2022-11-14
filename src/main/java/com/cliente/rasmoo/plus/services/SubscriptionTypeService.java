@@ -1,5 +1,6 @@
 package com.cliente.rasmoo.plus.services;
 
+import com.cliente.rasmoo.plus.controllers.SubscriptionTypeController;
 import com.cliente.rasmoo.plus.dtos.SubscriptionTypeDto;
 import com.cliente.rasmoo.plus.exceptions.BadRequestException;
 import com.cliente.rasmoo.plus.exceptions.NotFoundException;
@@ -7,6 +8,7 @@ import com.cliente.rasmoo.plus.mappers.SubscriptionTypeMapper;
 import com.cliente.rasmoo.plus.models.SubscriptionTypeModel;
 import com.cliente.rasmoo.plus.repositories.SubscriptionTypeRepository;
 import com.cliente.rasmoo.plus.services.rules.SubscriptionTypeRules;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +31,12 @@ public class SubscriptionTypeService implements SubscriptionTypeRules {
 
     @Override
     public SubscriptionTypeModel findById(Long id) {
-        return getSubscriptionTypeModel(id);
+        return getSubscriptionTypeModel(id).add(WebMvcLinkBuilder.linkTo(
+            WebMvcLinkBuilder
+                .methodOn(SubscriptionTypeController.class)
+                .findById(id))
+                .withSelfRel()
+        );
     }
 
     @Override
