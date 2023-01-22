@@ -11,3 +11,20 @@ services:
       MYSQL_PASSWORD: 12345
     ports:
       - "3306:3306"
+    volumes:
+      - mysql_data_container:/data/db
+  rasmoo_mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: develop
+      MONGO_INITDB_ROOT_PASSWORD: 12345
+    volumes:
+      - mongodb_data_container:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  mysql_data_container:
+  mongodb_data_container:
+

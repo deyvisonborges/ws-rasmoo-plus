@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  database:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_ROOT_PASSWORD: root
+      POSTGRES_DATABASE: novoadmin_access
+      POSTGRES_USER: develop
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "5432:5432"
