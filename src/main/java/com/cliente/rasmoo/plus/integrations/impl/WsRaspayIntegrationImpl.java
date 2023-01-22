@@ -16,16 +16,17 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class WsRaspayIntegrationImpl implements WsRaspayIntegration {
     private RestTemplate restTemplate;
+    private final HttpHeaders headers;
 
     public WsRaspayIntegrationImpl() {
         restTemplate = new RestTemplate();
+        headers = getHttpHeaders();
     }
 
     @Override
     public CustomerDto createCustomer(CustomerDto customerDto) {
        try {
-           var headers = getHttpHeaders();
-           HttpEntity<CustomerDto> request = new HttpEntity<>(customerDto, headers);
+           HttpEntity<CustomerDto> request = new HttpEntity<>(customerDto, this.headers);
            var url = "http://localhost:8081/ws-raspay/v1/customer";
            ResponseEntity<CustomerDto> response =
                    restTemplate.exchange(url, HttpMethod.POST, request, CustomerDto.class);
@@ -37,7 +38,15 @@ public class WsRaspayIntegrationImpl implements WsRaspayIntegration {
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
-        return null;
+        try {
+            HttpEntity<OrderDto> request = new HttpEntity<>(orderDto, this.headers);
+            var url = "http://localhost:8081/ws-raspay/v1/order";
+            ResponseEntity<OrderDto> response =
+                    restTemplate.exchange(url, HttpMethod.POST, request, OrderDto.class);
+            return response.getBody();
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
     @Override
