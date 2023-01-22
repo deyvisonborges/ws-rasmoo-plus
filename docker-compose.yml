@@ -7,7 +7,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: rasplus
-      MYSQL_USER: deyvison
+      MYSQL_USER: develop
       MYSQL_PASSWORD: 12345
     ports:
       - "3306:3306"
