@@ -5,6 +5,7 @@ import com.cliente.rasmoo.plus.dtos.wsraspay.OrderDto;
 import com.cliente.rasmoo.plus.dtos.wsraspay.PaymentDto;
 import com.cliente.rasmoo.plus.integrations.WsRaspayIntegration;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,7 +16,15 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class WsRaspayIntegrationImpl implements WsRaspayIntegration {
-    private RestTemplate restTemplate;
+    @Value("${webservices.raspay.host}")
+    private String raspayHost;
+    @Value("${webservices.raspay.v1.customer}")
+    private String customerUrl;
+    @Value("${webservices.raspay.v1.order}")
+    private String orderUrl;
+    @Value("${webservices.raspay.v1.payment}")
+    private String paymentUrl;
+    private final RestTemplate restTemplate;
     private final HttpHeaders headers;
 
     public WsRaspayIntegrationImpl() {
@@ -27,7 +36,7 @@ public class WsRaspayIntegrationImpl implements WsRaspayIntegration {
     public CustomerDto createCustomer(CustomerDto customerDto) {
        try {
            HttpEntity<CustomerDto> request = new HttpEntity<>(customerDto, this.headers);
-           var url = "http://localhost:8081/ws-raspay/v1/customer";
+           var url = raspayHost+customerUrl;
            ResponseEntity<CustomerDto> response =
                    restTemplate.exchange(url, HttpMethod.POST, request, CustomerDto.class);
            return response.getBody();
@@ -40,7 +49,7 @@ public class WsRaspayIntegrationImpl implements WsRaspayIntegration {
     public OrderDto createOrder(OrderDto orderDto) {
         try {
             HttpEntity<OrderDto> request = new HttpEntity<>(orderDto, this.headers);
-            var url = "http://localhost:8081/ws-raspay/v1/order";
+            var url = raspayHost+orderUrl;
             ResponseEntity<OrderDto> response =
                     restTemplate.exchange(url, HttpMethod.POST, request, OrderDto.class);
             return response.getBody();
@@ -53,7 +62,7 @@ public class WsRaspayIntegrationImpl implements WsRaspayIntegration {
     public Boolean processPayment(PaymentDto paymentDto) {
         try {
             HttpEntity<PaymentDto> request = new HttpEntity<>(paymentDto, this.headers);
-            var url = "http://localhost:8081/ws-raspay/v1/paymeny/credit-card/";
+            var url = raspayHost+paymentUrl;
             ResponseEntity<Boolean> response =
                     restTemplate.exchange(url, HttpMethod.POST, request, Boolean.class);
             return response.getBody();
