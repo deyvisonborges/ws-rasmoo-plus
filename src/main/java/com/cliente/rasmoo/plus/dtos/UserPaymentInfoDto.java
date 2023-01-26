@@ -1,12 +1,10 @@
 package com.cliente.rasmoo.plus.dtos;
 
-import com.cliente.rasmoo.plus.models.UserModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -34,7 +32,7 @@ public class UserPaymentInfoDto {
     private String cardSecurityCode;
 
     private BigDecimal price;
-    private Number installments;
+    private Long installments;
     private LocalDate dtPayment = LocalDate.now();
 
     @NotNull(message = "deve ser informado")
