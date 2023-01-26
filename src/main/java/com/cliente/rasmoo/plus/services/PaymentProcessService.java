@@ -64,6 +64,8 @@ public class PaymentProcessService implements PaymentProcessRules {
             userPaymentInfoRepository.save(userPaymentInfo);
         }
 
+        // enviar email de criacao de conta
+
         return null;
     }
 }
