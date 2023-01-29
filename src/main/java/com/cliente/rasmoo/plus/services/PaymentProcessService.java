@@ -3,6 +3,7 @@ package com.cliente.rasmoo.plus.services;
 import com.cliente.rasmoo.plus.dtos.PaymentProcessDto;
 import com.cliente.rasmoo.plus.exceptions.BusinessException;
 import com.cliente.rasmoo.plus.exceptions.NotFoundException;
+import com.cliente.rasmoo.plus.integrations.MailIntegration;
 import com.cliente.rasmoo.plus.integrations.WsRaspayIntegration;
 import com.cliente.rasmoo.plus.mappers.UserPaymentInfoMapper;
 import com.cliente.rasmoo.plus.mappers.wsraspay.CreditCardMapper;
@@ -19,15 +20,17 @@ public class PaymentProcessService implements PaymentProcessRules {
     private final UserRepository userRepository;
     private final UserPaymentInfoRepository userPaymentInfoRepository;
     private final WsRaspayIntegration wsRaspayIntegration;
+    private final MailIntegration mailIntegration;
 
     PaymentProcessService(
             UserRepository userRepository,
             UserPaymentInfoRepository userPaymentInfoRepository,
-            WsRaspayIntegration wsRaspayIntegration
-    ) {
+            WsRaspayIntegration wsRaspayIntegration,
+            MailIntegration mailIntegration) {
         this.userRepository = userRepository;
         this.userPaymentInfoRepository = userPaymentInfoRepository;
         this.wsRaspayIntegration = wsRaspayIntegration;
+        this.mailIntegration = mailIntegration;
     }
     @Override
     public Boolean process(PaymentProcessDto paymentProcessDto) {
@@ -62,6 +65,7 @@ public class PaymentProcessService implements PaymentProcessRules {
             // salvar informações de pagamento
             var userPaymentInfo = UserPaymentInfoMapper.mapper(paymentProcessDto.getUserPaymentInfoDto(), user);
             userPaymentInfoRepository.save(userPaymentInfo);
+            mailIntegration.send(user.getEmail(), "Login: "+user.getEmail()+"Senha: aluno123", "Acesso liberado");
         }
 
         // enviar email de criacao de conta

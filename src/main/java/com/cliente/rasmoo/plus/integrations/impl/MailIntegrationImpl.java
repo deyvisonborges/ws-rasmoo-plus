@@ -12,11 +12,11 @@ public class MailIntegrationImpl implements MailIntegration {
     @Autowired
     private JavaMailSender javaMailSender;
     @Override
-    public void send(String mailTo, String message) {
+    public void send(String mailTo, String message, String subject) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(mailTo);
-        simpleMailMessage.setSubject("Acesso liberado");
-        simpleMailMessage.setText("Login: "+mailTo+"Senha: aluno123");
+        simpleMailMessage.setSubject(subject);
+        simpleMailMessage.setText(message);
         javaMailSender.send(simpleMailMessage);
     }
 }
