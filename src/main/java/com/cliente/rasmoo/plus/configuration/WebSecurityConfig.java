@@ -17,7 +17,8 @@ public class WebSecurityConfig {
             .antMatchers(HttpMethod.GET, "/subscription-type")
                 .permitAll()
             .antMatchers(HttpMethod.GET, "/subiscription-type/*")
-                    .permitAll();
+                .permitAll()
+                .anyRequest().authenticated();
         return httpSecurity.build();
     }
 }
