@@ -14,6 +14,6 @@ class MainIntegrationImplTest {
 
     @Test
     void send() {
-       mailIntegration.send("meuemail@gmail.com", "senhadoemail");
+       mailIntegration.send("meuemail@gmail.com", "senhadoemail", "");
     }
 }

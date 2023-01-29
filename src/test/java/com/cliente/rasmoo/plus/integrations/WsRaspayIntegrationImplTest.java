@@ -31,7 +31,7 @@ class WsRaspayIntegrationImplTest {
 
     @Test
     void processPaymentWhenDtoOk() {
-        var creditCardDto = new CreditCardDto((long) 123.00, "123", (long) 2, 12L, "12", 12L);
+        var creditCardDto = new CreditCardDto((long) 123.00, "123", (long) 2, 12L, 12, 12L);
         var paymentDto = new PaymentDto(creditCardDto, "1", "1");
         wsRaspayIntegration.processPayment(paymentDto);
     }
