@@ -1,6 +1,7 @@
 package com.cliente.rasmoo.plus.configuration;
 
 import com.cliente.rasmoo.plus.configuration.filters.AuthenticationFilter;
+import com.cliente.rasmoo.plus.services.TokenServiceImpl;
 import com.cliente.rasmoo.plus.services.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,9 @@ public class WebSecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private TokenServiceImpl tokenService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -32,7 +36,7 @@ public class WebSecurityConfig {
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(new AuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new AuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
