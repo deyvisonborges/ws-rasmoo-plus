@@ -1,13 +1,13 @@
 package com.cliente.rasmoo.plus.configuration;
 
 import com.cliente.rasmoo.plus.configuration.filters.AuthenticationFilter;
+import com.cliente.rasmoo.plus.repositories.UserDetailsRepository;
 import com.cliente.rasmoo.plus.services.TokenServiceImpl;
 import com.cliente.rasmoo.plus.services.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,6 +26,9 @@ public class WebSecurityConfig {
     @Autowired
     private TokenServiceImpl tokenService;
 
+    @Autowired
+    private UserDetailsRepository userDetailsRepository;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -36,7 +39,7 @@ public class WebSecurityConfig {
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(new AuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new AuthenticationFilter(tokenService, userDetailsRepository), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 

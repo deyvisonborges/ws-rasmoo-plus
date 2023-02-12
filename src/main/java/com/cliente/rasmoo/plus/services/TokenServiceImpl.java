@@ -2,6 +2,7 @@ package com.cliente.rasmoo.plus.services;
 
 import com.cliente.rasmoo.plus.models.UserCredentials;
 import com.cliente.rasmoo.plus.services.rules.TokenServiceRules;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,10 +37,24 @@ public class TokenServiceImpl implements TokenServiceRules {
     @Override
     public Boolean isValid(String token) {
         try {
-            Jwts.parser().setSigningKey(secret).parsePlaintextJws(token);
+            getClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public Long getUserId(String token) {
+        try {
+           Jws<String> claims = getClaimsJws(token);
+            return Long.parseLong(claims.getBody());
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    private Jws<String> getClaimsJws(String token) {
+        return Jwts.parser().setSigningKey(secret).parsePlaintextJws(token);
     }
 }
