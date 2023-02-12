@@ -32,12 +32,13 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-            .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/subscription-type")
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/subscription-type")
                 .permitAll()
-            .antMatchers(HttpMethod.GET, "/subiscription-type/*")
-                .permitAll()
-                .anyRequest().authenticated()
+                .antMatchers(HttpMethod.GET, "/subiscription-type/*").permitAll().anyRequest().authenticated()
+                .antMatchers(HttpMethod.POST, "/users").permitAll()
+                .antMatchers(HttpMethod.POST, "/payment/process").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(new AuthenticationFilter(tokenService, userDetailsRepository), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
@@ -45,6 +46,6 @@ public class WebSecurityConfig {
 
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
-            .passwordEncoder(new BCryptPasswordEncoder());
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 }
